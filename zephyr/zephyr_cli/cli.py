@@ -7,9 +7,7 @@ import click
 
 # Local Python Library Imports
 from zephyr.zephyr_state.zephyr_state import ZephyrState
-from zephyr.zephyr_utils import (
-    zephyr_utils,
-)
+from zephyr.zephyr_utils import zephyr_utils, init_utils
 
 
 # Setup Zephyr Logging
@@ -27,7 +25,7 @@ LOGGER = logging.getLogger("zephyr-log")
 @click.pass_context
 def zephyr_cli(cli_context: click.Context) -> None:
     """
-     A Scalable I/O Pipeline Builder
+    A Scalable I/O Pipeline Builder
     """
 
     cli_context.obj = ZephyrState()
@@ -36,19 +34,20 @@ def zephyr_cli(cli_context: click.Context) -> None:
 
 
 @click.command("init")
-@click.option("--project", help="Project to create", required=True)
-def init_command(project: str) -> None:
+# @click.option("--project", help="Project to create", required=True)
+def init_command() -> None:
     """Create and initialize zephyr folder"""
     """
     Purpose:
         Create and initialize zephyr project
     Args:
-        folder (String) - Folder to create
+        N/A
     Returns:
         N/A
     """
 
-    LOGGER.info(f"Init project {project}")
+    LOGGER.info(f"initializing project...")
+    init_utils.create_project()
 
 
 def setup_zephyr_cli() -> None:
