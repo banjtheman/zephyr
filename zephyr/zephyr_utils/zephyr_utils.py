@@ -19,13 +19,13 @@ def check_if_in_project() -> bool:
         status (Boolean): False if not in zephyr project, True if in zephyr project
     """
     # check if folder exisit
-    if os.path.exists(".zephyr"):
+    if os.path.exists(".zephyr/config.json"):
         # we should only check this file, in a git project if you delete .git
         # you are no longer in a git project we will follow that example
         status = True
     else:
         logging.info("Not inside Zephyr Project")
-        logging.info("run `zephyr init --folder=FOLDER_NAME` and retry")
+        logging.info("run `zephyr init and retry")
         status = False
     return status
 

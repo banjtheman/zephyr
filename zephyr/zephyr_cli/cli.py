@@ -7,7 +7,7 @@ import click
 
 # Local Python Library Imports
 from zephyr.zephyr_state.zephyr_state import ZephyrState
-from zephyr.zephyr_utils import zephyr_utils, init_utils
+from zephyr.zephyr_utils import zephyr_utils, init_utils, module_utils
 
 
 # Setup Zephyr Logging
@@ -50,6 +50,36 @@ def init_command() -> None:
     init_utils.create_project()
 
 
+# Command Group
+@zephyr_cli.group("module")
+def module_commands():
+    """Module related commands"""
+    pass
+
+
+@module_commands.command(name="create", help="creates new module")
+def module_create() -> None:
+    """Create and initialize zephyr folder"""
+    """
+    Purpose:
+        Create and initialize zephyr project
+    Args:
+        N/A
+    Returns:
+        N/A
+    """
+
+    # Check if in project
+    if zephyr_utils.check_if_in_project():
+            
+        # get module json
+        project_json = zephyr_utils.load_json(".zephyr/config.json")
+        project_name = project_json["project_name"]
+
+        LOGGER.info(f"Creating module...")
+        module_utils.create_module(project_name)
+
+
 def setup_zephyr_cli() -> None:
     """
     Purpose:
@@ -62,6 +92,7 @@ def setup_zephyr_cli() -> None:
 
     # zephyr Commands
     zephyr_cli.add_command(init_command)
+    module_commands.add_command(module_create)
 
 
 if __name__ == "__main__":
