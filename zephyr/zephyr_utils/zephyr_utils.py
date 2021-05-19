@@ -101,3 +101,65 @@ def save_json(json_path: str, json_data: Any) -> None:
             json.dump(json_data, outfile)
     except Exception as error:
         raise OSError(error)
+
+
+def append_to_file(file_path: str, file_text: str) -> bool:
+    """
+    Purpose:
+        Append text to a file
+    Args/Requests:
+         file_path: file path
+         file_text: Text of file
+    Return:
+        Status: True if appended, False if failed
+    """
+
+    try:
+        with open(file_path, "a") as myfile:
+            myfile.write(file_text)
+            return True
+
+    except Exception as error:
+        logging.error(error)
+        return False
+
+
+def read_from_file(file_path: str) -> str:
+    """
+    Purpose:
+        Read data from a file
+    Args/Requests:
+         file_path: file path
+    Return:
+        read_data: Text from file
+    """
+    try:
+        with open(file_path) as f:
+            read_data = f.read()
+
+    except Exception as error:
+        logging.error(error)
+        return None
+
+    return read_data
+
+
+def write_to_file(file_path: str, file_text: str) -> bool:
+    """
+    Purpose:
+        Write text from a file
+    Args/Requests:
+         file_path: file path
+         file_text: Text of file
+    Return:
+        Status: True if appened, False if failed
+    """
+
+    try:
+        with open(file_path, "w") as myfile:
+            myfile.write(file_text)
+            return True
+
+    except Exception as error:
+        logging.error(error)
+        return False
