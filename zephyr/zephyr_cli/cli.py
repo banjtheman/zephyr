@@ -7,7 +7,7 @@ import click
 
 # Local Python Library Imports
 from zephyr.zephyr_state.zephyr_state import ZephyrState
-from zephyr.zephyr_utils import zephyr_utils, init_utils, module_utils
+from zephyr.zephyr_utils import zephyr_utils, init_utils, module_utils, pipeline_utils
 
 
 # Setup Zephyr Logging
@@ -50,7 +50,7 @@ def init_command() -> None:
     init_utils.create_project()
 
 
-# Command Group
+# Module Command Group
 @zephyr_cli.group("module")
 def module_commands():
     """Module related commands"""
@@ -59,10 +59,10 @@ def module_commands():
 
 @module_commands.command(name="create", help="creates new module")
 def module_create() -> None:
-    """Create and initialize zephyr folder"""
+    """Create and initialize zephyr module"""
     """
     Purpose:
-        Create and initialize zephyr project
+        Create and initialize zephyr module
     Args:
         N/A
     Returns:
@@ -71,13 +71,43 @@ def module_create() -> None:
 
     # Check if in project
     if zephyr_utils.check_if_in_project():
-            
+
         # get module json
         project_json = zephyr_utils.load_json(".zephyr/config.json")
         project_name = project_json["project_name"]
 
         LOGGER.info(f"Creating module...")
         module_utils.create_module(project_name)
+
+
+# Pipeline Command Group
+@zephyr_cli.group("pipeline")
+def pipeline_commands():
+    """Pipeline related commands"""
+    pass
+
+
+@pipeline_commands.command(name="create", help="creates new pipeline")
+def pipeline_create() -> None:
+    """Create and initialize zephyr pipeline"""
+    """
+    Purpose:
+        Create and initialize zephyr pipeline
+    Args:
+        N/A
+    Returns:
+        N/A
+    """
+
+    # Check if in project
+    if zephyr_utils.check_if_in_project():
+
+        # get module json
+        project_json = zephyr_utils.load_json(".zephyr/config.json")
+        project_name = project_json["project_name"]
+
+        LOGGER.info(f"Creating pipeline...")
+        pipeline_utils.create_pipeline(project_name)
 
 
 def setup_zephyr_cli() -> None:
@@ -93,6 +123,7 @@ def setup_zephyr_cli() -> None:
     # zephyr Commands
     zephyr_cli.add_command(init_command)
     module_commands.add_command(module_create)
+    pipeline_commands.add_command(pipeline_create)
 
 
 if __name__ == "__main__":
