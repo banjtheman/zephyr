@@ -35,4 +35,10 @@ def create_module(project_name: str) -> None:
     zephyr_config["modules"].append(module_name)
     zephyr_utils.save_json(".zephyr/config.json", zephyr_config)
 
+    # append to docker-compose.yml
+    docker_compose_text = f"""\
+  {module_name}:
+    build: {project_name}/modules/{module_name}/.\n"""
+    zephyr_utils.append_to_file("./docker-compose.yml", docker_compose_text)
+
     click.echo(f"Moudle {module_name} created")

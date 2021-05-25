@@ -121,6 +121,10 @@ def create_pipeline(project_name: str) -> None:
 
     replace_pipeline_file(pipeline_full_name, modules, project_name, pipeline_name)
 
+    # update the config json with the pipeline
+    zephyr_config["pipelines"].append(pipeline_name)
+    zephyr_utils.save_json(".zephyr/config.json", zephyr_config)
+
     click.echo("Pipeline created")
     click.echo(f"Test with...")
     click.echo(f"python {pipeline_full_name} run")
