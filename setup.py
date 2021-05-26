@@ -176,13 +176,15 @@ def main():
             "Programming Language :: Python :: 3.7",
             "Programming Language :: Python :: 3.8",
         ],
-        description=("Zephyr is a package to build scabale I/O pipelines."),
+        description=(
+            "Zephyr is a command-line utility that provides project and component scaffolding to build modular pipelines"
+        ),
         include_package_data=True,
         install_requires=install_requirements,
-        keywords=["python", "pipelines", "metaflow", "machine learning", "docker"],
+        keywords=["python", "pipeline", "metaflow", "cookiecutter", "docker"],
         long_description=readme,
         long_description_content_type="text/markdown",
-        name="zephyr",
+        name="zephyr_bootstrap",
         packages=packages,
         project_urls={},
         python_requires=">3.6",

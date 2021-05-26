@@ -17,7 +17,7 @@ Getting up and running with Zephyr is easy
 Install zephyr from [pypi]()
 
 ```
-pip install zephyr 
+pip install zephyr_bootstrap 
 ```
 
 ### Bootstrap project
