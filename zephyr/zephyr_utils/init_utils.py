@@ -1,11 +1,13 @@
 # Python Library Imports
-import click
+import os
 
 # 3rd party imports
 import nbformat as nbf
+import click
+from cookiecutter.main import cookiecutter
 
 # Project Imports
-from cookiecutter.main import cookiecutter
+from zephyr.zephyr_utils import zephyr_utils
 
 
 def create_project():
@@ -13,7 +15,7 @@ def create_project():
     Purpose:
         Create a zephyr project
     Args:
-        project - name of the project
+        N/A
     Returns:
         N/A
     """
@@ -23,6 +25,46 @@ def create_project():
     create_starter_notebook(project_name)
 
     click.echo(f"Project {project_name} created")
+
+
+def create_custom_project(url):
+    """
+    Purpose:
+        Create a custom zephyr project
+    Args:
+        project - name of the project
+    Returns:
+        N/A
+    """
+    project_path = cookiecutter(url)
+    project_name = project_path.split("/")[-1]
+
+    custom_json = {
+        "project_name": f"{project_name}",
+        "custom_project": "True",
+        "project_desc": "custom project",
+        "pipelines": [],
+        "modules": [],
+    }
+
+    # make custom .zephyr dir
+    cmd = f"mkdir -p {project_name}/.zephyr/"
+    os.system(cmd)
+
+    # make custom pipelines dir
+    cmd = f"mkdir -p {project_name}/pipelines/"
+    os.system(cmd)
+    
+    # make custom modules dir
+    cmd = f"mkdir -p {project_name}/modules/"
+    os.system(cmd)
+
+    # if file doesnt exist save
+    config_path = f"{project_name}/.zephyr/config.json"
+    if not os.path.exists(config_path):
+        zephyr_utils.save_json(config_path, custom_json)
+
+    click.echo(f"Custom Project {project_name} created")
 
 
 def create_starter_notebook(project_name: str):

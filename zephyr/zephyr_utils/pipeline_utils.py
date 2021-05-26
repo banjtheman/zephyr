@@ -1,5 +1,4 @@
 # Python Library Imports
-import logging
 from typing import List
 
 # 3rd party imports

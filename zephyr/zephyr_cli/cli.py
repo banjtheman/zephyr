@@ -25,7 +25,7 @@ LOGGER = logging.getLogger("zephyr-log")
 @click.pass_context
 def zephyr_cli(cli_context: click.Context) -> None:
     """
-    A Scalable I/O Pipeline Builder
+    A Modular Pipeline Scaffolding Tool
     """
 
     cli_context.obj = ZephyrState()
@@ -34,8 +34,8 @@ def zephyr_cli(cli_context: click.Context) -> None:
 
 
 @click.command("init")
-# @click.option("--project", help="Project to create", required=True)
-def init_command() -> None:
+@click.option("--custom", help="Your custom cookie cutter url", required=False)
+def init_command(custom: str) -> None:
     """Create and initialize zephyr folder"""
     """
     Purpose:
@@ -45,6 +45,11 @@ def init_command() -> None:
     Returns:
         N/A
     """
+
+    if custom:
+        click.echo("Building custom cookie cutter")
+        init_utils.create_custom_project(custom)
+        return
 
     LOGGER.info(f"initializing project...")
     init_utils.create_project()
@@ -58,7 +63,8 @@ def module_commands():
 
 
 @module_commands.command(name="create", help="creates new module")
-def module_create() -> None:
+@click.option("--custom", help="Your custom cookie cutter url", required=False)
+def module_create(custom: str) -> None:
     """Create and initialize zephyr module"""
     """
     Purpose:
@@ -72,12 +78,55 @@ def module_create() -> None:
     # Check if in project
     if zephyr_utils.check_if_in_project():
 
+        if custom:
+            click.echo("Building custom module")
+            module_utils.create_custom_module(custom)
+            return
+
         # get module json
         project_json = zephyr_utils.load_json(".zephyr/config.json")
         project_name = project_json["project_name"]
 
         LOGGER.info(f"Creating module...")
         module_utils.create_module(project_name)
+
+
+@module_commands.command(name="delete", help="deletes a module")
+def module_delete() -> None:
+    """Deletes a zephyr module"""
+    """
+    Purpose:
+        Delete a zephyr module
+    Args:
+        N/A
+    Returns:
+        N/A
+    """
+
+    # Check if in project
+    if zephyr_utils.check_if_in_project():
+
+        # get module json
+        zephyr_config = zephyr_utils.load_json(".zephyr/config.json")
+        project_name = zephyr_config["project_name"]
+        zephyr_moudles = zephyr_config["modules"]
+
+        click.echo(f"Current modules: {zephyr_moudles}")
+        module = click.prompt("Type module to delete", type=str)
+
+        # check if valid module
+        if module not in zephyr_moudles:
+            click.echo(f"Invalid module : {module}")
+            return
+
+        click.confirm(
+            f"Do you want to delete {module}",
+            abort=True,
+            default=False,
+        )
+
+        LOGGER.info(f"Deleting module...{module}")
+        module_utils.delete_module(project_name, module)
 
 
 # Pipeline Command Group
@@ -120,9 +169,10 @@ def setup_zephyr_cli() -> None:
         N/A
     """
 
-    # zephyr Commands
+    # zephyr commands
     zephyr_cli.add_command(init_command)
     module_commands.add_command(module_create)
+    module_commands.add_command(module_delete)
     pipeline_commands.add_command(pipeline_create)
 
 
