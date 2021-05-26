@@ -14,15 +14,15 @@ Getting up and running with Zephyr is easy
 
 ### Installing Zephyr
 
-Install zephyr from [pypi]()
+Install zephyr from [pypi](https://pypi.org/project/zephyr-bootstrap/)
 
 ```
-pip install zephyr_bootstrap 
+pip install zephyr-bootstrap
 ```
 
 ### Bootstrap project
 
-To start simply use zephyr init
+To start simply use...
 
 ```
 zephyr init
@@ -107,7 +107,7 @@ Module my_module deleted
 
 ### Pipeline
 
-Can create a modular pipeline using
+Can create a modular pipeline using...
 
 ```
 zephyr pipeline create
