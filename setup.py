@@ -73,7 +73,7 @@ def get_requirements_from_packages(packages):
             the library
     """
 
-    requirements = []
+    requirements = (get_requirements_from_file())
     for package in packages:
         package_dir = package.replace(".", "/")
         requirement_files = get_requirements_files_in_package_dir(package_dir)
